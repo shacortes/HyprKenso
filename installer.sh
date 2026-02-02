@@ -249,3 +249,34 @@ if ! grep -q "^IgnorePkg.*hyprland" "$PACMAN_CONF"; then
 fi
 
 echo "✔ Hyprland locked at 0.52.2"
+# -----------------------------
+# 🔧 Fix hypr-lens paths (username-safe)
+# -----------------------------
+echo "🛠 Fixing hypr-lens config paths..."
+
+HYPR_LENS_CFG="$HOME/.config/hypr-lens/config.json"
+USER_HOME="/home/$USER"
+
+if [[ -f "$HYPR_LENS_CFG" ]]; then
+  # Ensure jq exists
+  if ! command -v jq &>/dev/null; then
+    echo "📦 Installing jq..."
+    yay -S --noconfirm jq
+  fi
+
+  tmpfile="$(mktemp)"
+
+  jq \
+    --arg home "$USER_HOME" \
+    '
+    .appearance.matugenPath = ($home + "/.config/quickshell/matugen.json")
+    | .screenSnip.savePath = ($home + "/Pictures/ScreenShots")
+    ' \
+    "$HYPR_LENS_CFG" > "$tmpfile"
+
+  mv "$tmpfile" "$HYPR_LENS_CFG"
+
+  echo "✔ hypr-lens paths updated for user: $USER"
+else
+  echo "⚠ hypr-lens config.json not found, skipping"
+fi
