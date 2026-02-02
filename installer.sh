@@ -125,6 +125,7 @@ backup_and_copy "$BASE_DIR/kenso-waybar"      "$HOME/.config/waybar"
 backup_and_copy "$BASE_DIR/kenso-swaync"      "$HOME/.config/swaync"
 backup_and_copy "$BASE_DIR/kenso-wlogout"     "$HOME/.config/wlogout"
 backup_and_copy "$BASE_DIR/kenso-quickshell"  "$HOME/.config/quickshell"
+backup_and_copy "$BASE_DIR/kenso-spicetify"	  "$HOME/.config/spicetify"
 backup_and_copy "$BASE_DIR/kenso-matugen"     "$HOME/.config"
 
 # Wallpapers
