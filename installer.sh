@@ -14,6 +14,7 @@ BACKUP_DIR="$HOME/.config_backup_$(date +%Y%m%d%H%M)"
 
 # Required packages (minimal)
 PACKAGES=(
+  downgrade
   hyprland
   waybar
   rofi
@@ -27,9 +28,14 @@ PACKAGES=(
   tmux
   thunar
   brave-bin
+  zsh
+  zsh-autosuggestions
+  zsh-history-substring-search
+  zsh-syntax-highlighting
+  zsh-theme-powerlevel10k-git
   cava
   kitty
-  zsh
+  yazi
   fastfetch
   rmpc-git
   quickshell-git
@@ -220,3 +226,25 @@ if [[ "$CURRENT_SHELL" != "$(which zsh)" ]]; then
 else
     echo "✔ Default shell is already zsh"
 fi
+# -----------------------------
+# Force downgrade Hyprland to 0.52.2
+# -----------------------------
+echo "⬇ Forcing Hyprland downgrade to 0.52.2"
+
+# Ensure downgrade tool exists
+if ! command -v downgrade &>/dev/null; then
+  echo "📦 Installing downgrade tool..."
+  yay -S --noconfirm downgrade
+fi
+
+# Downgrade Hyprland non-interactively
+sudo downgrade hyprland --version 0.52.2 --yes
+
+# Lock Hyprland to prevent upgrades
+PACMAN_CONF="/etc/pacman.conf"
+if ! grep -q "^IgnorePkg.*hyprland" "$PACMAN_CONF"; then
+  echo "🔒 Locking Hyprland version in pacman.conf"
+  sudo sed -i '/^\[options\]/a IgnorePkg = hyprland' "$PACMAN_CONF"
+fi
+
+echo "✔ Hyprland locked at 0.52.2"
