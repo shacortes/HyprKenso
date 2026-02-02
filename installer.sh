@@ -24,6 +24,10 @@ PACKAGES=(
   matugen-bin
   wlogout
   swww
+  swayosd
+  polkit-gnome
+  wl-clipboard
+  wl-clip-persist
   swappy
   tmux
   thunar
