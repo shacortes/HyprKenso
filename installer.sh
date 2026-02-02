@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
+
+# ==========================================
+# Kenso Installer (FINAL CLEAN VERSION)
+# ==========================================
+
 set -euo pipefail
 
-# ==========================================
-# Kenso Fresh Minimal Installer (Fixed)
-# ==========================================
-
+# -----------------------------
+# Paths
+# -----------------------------
 BASE_DIR="$HOME/hyprkenso"
 CONFIG_DIR="$HOME/.config"
 BACKUP_DIR="$HOME/.config_backup_$(date +%Y%m%d%H%M)"
 
 # -----------------------------
-# Required minimal packages
+# Required packages (minimal)
 # -----------------------------
 PACKAGES=(
   tar
@@ -141,30 +145,20 @@ PACKAGES=(
 )
 
 # -----------------------------
-# Dotfile repos
+# Repos
 # -----------------------------
-REPOS=(
-  https://github.com/aadritobasu/kenso-matugen
-  https://github.com/aadritobasu/kenso-hypr
-  https://github.com/aadritobasu/kenso-nvim
-  https://github.com/aadritobasu/kenso-rofi
-  https://github.com/aadritobasu/kenso-quickshell
-  https://github.com/aadritobasu/kenso-swaync
-  https://github.com/aadritobasu/kenso-waybar
-  https://github.com/aadritobasu/kenso-icon-themes
-  https://github.com/aadritobasu/kenso-spicetify
-  https://github.com/aadritobasu/kenso-wlogout
-  https://github.com/aadritobasu/wallpapers
-  https://github.com/aadritobasu/kenso-fastfetch-config
-)
+DOTS_REPO="https://github.com/aadritobasu/kenso-dots"
+ICONS_REPO="https://github.com/aadritobasu/kenso-icon-themes"
+FASTFETCH_REPO="https://github.com/aadritobasu/kenso-fastfetch-config"
+WALLS_REPO="https://github.com/aadritobasu/wallpapers"
 
 # -----------------------------
-# Ensure yay
+# Ensure yay exists
 # -----------------------------
-command -v yay >/dev/null || {
-  echo "❌ yay not installed"
+if ! command -v yay &>/dev/null; then
+  echo "❌ yay not found. Install yay first."
   exit 1
-}
+fi
 
 # -----------------------------
 # Install packages
@@ -176,18 +170,27 @@ yay -S --needed --noconfirm "${PACKAGES[@]}"
 # -----------------------------
 # Clone repos
 # -----------------------------
-echo "📥 Cloning dotfiles into $BASE_DIR"
+echo "📥 Cloning repositories..."
 mkdir -p "$BASE_DIR"
 
-for repo in "${REPOS[@]}"; do
-  name="$(basename "$repo")"
-  target="$BASE_DIR/$name"
+clone_or_update() {
+  local repo="$1"
+  local dest="$2"
 
-  [[ -d "$target/.git" ]] && git -C "$target" pull || git clone "$repo" "$target"
-done
+  if [[ -d "$dest/.git" ]]; then
+    git -C "$dest" pull
+  else
+    git clone "$repo" "$dest"
+  fi
+}
+
+clone_or_update "$DOTS_REPO"      "$BASE_DIR/kenso-dots"
+clone_or_update "$ICONS_REPO"     "$BASE_DIR/kenso-icon-themes"
+clone_or_update "$FASTFETCH_REPO" "$BASE_DIR/kenso-fastfetch"
+clone_or_update "$WALLS_REPO"     "$BASE_DIR/wallpapers"
 
 # -----------------------------
-# Backup entire ~/.config ONCE
+# Backup ~/.config ONCE
 # -----------------------------
 echo "🗄 Backing up ~/.config → $BACKUP_DIR"
 if [[ -d "$CONFIG_DIR" ]]; then
@@ -195,110 +198,118 @@ if [[ -d "$CONFIG_DIR" ]]; then
 fi
 
 # -----------------------------
-# Copy dotfiles (skip .git)
+# Copy dotfiles → ~/.config (NO .git)
 # -----------------------------
-echo "📂 Copying configs..."
+echo "📂 Copying kenso-dots into ~/.config"
 
-copy_cfg() {
-  rsync -a --delete \
-    --exclude='.git' \
-    "$1"/ "$2"/
-}
+rsync -a \
+  --exclude='.git' \
+  --exclude='.gitignore' \
+  "$BASE_DIR/kenso-dots"/ \
+  "$CONFIG_DIR"/
 
-mkdir -p "$CONFIG_DIR"
-
-copy_cfg "$BASE_DIR/kenso-hypr"        "$CONFIG_DIR/hypr"
-copy_cfg "$BASE_DIR/kenso-nvim"        "$CONFIG_DIR/nvim"
-copy_cfg "$BASE_DIR/kenso-rofi"        "$CONFIG_DIR/rofi"
-copy_cfg "$BASE_DIR/kenso-waybar"      "$CONFIG_DIR/waybar"
-copy_cfg "$BASE_DIR/kenso-swaync"      "$CONFIG_DIR/swaync"
-copy_cfg "$BASE_DIR/kenso-wlogout"     "$CONFIG_DIR/wlogout"
-copy_cfg "$BASE_DIR/kenso-quickshell"  "$CONFIG_DIR/quickshell"
-copy_cfg "$BASE_DIR/kenso-spicetify"   "$CONFIG_DIR/spicetify"
-copy_cfg "$BASE_DIR/kenso-matugen"     "$CONFIG_DIR"
-
+# -----------------------------
 # Wallpapers
+# -----------------------------
+echo "🖼 Installing wallpapers..."
 mkdir -p "$HOME/Pictures"
-copy_cfg "$BASE_DIR/wallpapers" "$HOME/Pictures/wallpapers"
+rsync -a "$BASE_DIR/wallpapers"/ "$HOME/Pictures/wallpapers/"
 
 # -----------------------------
 # Icon themes
 # -----------------------------
 echo "🎨 Installing icon themes..."
 mkdir -p "$HOME/.local/share/icons"
-copy_cfg "$BASE_DIR/kenso-icon-themes" "$HOME/.local/share/icons"
+rsync -a "$BASE_DIR/kenso-icon-themes"/ "$HOME/.local/share/icons/"
 
 # -----------------------------
-# Fastfetch install (script only)
+# Fastfetch
 # -----------------------------
 echo "⚡ Installing fastfetch config..."
-cd "$BASE_DIR/kenso-fastfetch-config"
+cd "$BASE_DIR/kenso-fastfetch"
 chmod +x install.sh
 ./install.sh
 cd "$HOME"
 
 # -----------------------------
-# ZSH config copy (from ~/.config/zsh)
+# ZSH config copy
 # -----------------------------
 echo "🐚 Copying ZSH configs..."
+
 ZSH_SRC="$CONFIG_DIR/zsh"
 
 if [[ -d "$ZSH_SRC" ]]; then
-  cp -f "$ZSH_SRC"/.zshrc "$HOME/" 2>/dev/null || true
-  cp -f "$ZSH_SRC"/.p10k.zsh "$HOME/" 2>/dev/null || true
-  cp -f "$ZSH_SRC"/.zcompdump* "$HOME/" 2>/dev/null || true
+  rsync -a "$ZSH_SRC"/ "$HOME/"
 fi
 
 # -----------------------------
-# Powerlevel10k
+# Oh My Zsh + Powerlevel10k
 # -----------------------------
-echo "🌟 Installing Powerlevel10k..."
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+echo "🌟 Installing Oh My Zsh & Powerlevel10k..."
 
-[[ -d "$HOME/.oh-my-zsh" ]] || \
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+  RUNZSH=no CHSH=no \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
-[[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ]] || \
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
+ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 
-sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$HOME/.zshrc"
+if [[ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+    "$ZSH_CUSTOM/themes/powerlevel10k"
+fi
+
+touch "$HOME/.zshrc"
+sed -i '/^ZSH_THEME=/d' "$HOME/.zshrc"
+echo 'ZSH_THEME="powerlevel10k/powerlevel10k"' >> "$HOME/.zshrc"
 
 # -----------------------------
-# Change shell
+# Change default shell
 # -----------------------------
-echo "🌀 Changing default shell to zsh..."
-chsh -s "$(which zsh)"
+if [[ "$(getent passwd "$USER" | cut -d: -f7)" != "$(which zsh)" ]]; then
+  chsh -s "$(which zsh)"
+fi
 
 # -----------------------------
-# MPD + PipeWire
+# Enable services
 # -----------------------------
-echo "🎵 Enabling MPD..."
-sudo systemctl enable --now mpd.service
+echo "🎵 Enabling services..."
+sudo systemctl enable --now mpd
 systemctl --user enable --now pipewire pipewire-pulse
 
 # -----------------------------
-# Force Hyprland downgrade
+# Downgrade Hyprland → 0.52.2
 # -----------------------------
-echo "⬇ Downgrading Hyprland → 0.52.2"
+echo "⬇ Downgrading Hyprland to 0.52.2"
 sudo downgrade hyprland --version 0.52.2 --yes
 
-sudo sed -i '/^\[options\]/a IgnorePkg = hyprland' /etc/pacman.conf
+if ! grep -q "^IgnorePkg.*hyprland" /etc/pacman.conf; then
+  sudo sed -i '/^\[options\]/a IgnorePkg = hyprland' /etc/pacman.conf
+fi
 
 # -----------------------------
 # Fix hypr-lens paths
 # -----------------------------
 echo "🛠 Fixing hypr-lens paths..."
+
 CFG="$CONFIG_DIR/hypr-lens/config.json"
 
 if [[ -f "$CFG" ]]; then
-  jq \
-    --arg home "/home/$USER" \
-    '
+  tmp="$(mktemp)"
+  jq --arg home "$HOME" '
     .appearance.matugenPath = ($home + "/.config/quickshell/matugen.json")
     | .screenSnip.savePath = ($home + "/Pictures/ScreenShots")
-    ' "$CFG" > "$CFG.tmp" && mv "$CFG.tmp" "$CFG"
+  ' "$CFG" > "$tmp"
+  mv "$tmp" "$CFG"
 fi
 
-echo "✅ Kenso install complete"
-echo "📁 Cloned at: $BASE_DIR"
-echo "🗄 Config backup: $BACKUP_DIR"
+# -----------------------------
+# Display manager
+# -----------------------------
+if ! pacman -Q gdm &>/dev/null && ! pacman -Q lightdm &>/dev/null; then
+  sudo systemctl enable sddm
+fi
+
+echo "✅ Kenso installation COMPLETE"
+echo "🔁 Backup: $BACKUP_DIR"
+echo "➡️  Reboot recommended"
