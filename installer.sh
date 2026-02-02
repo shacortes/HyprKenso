@@ -64,15 +64,9 @@ PACKAGES=(
   gtk-layer-shell
   gtk-update-icon-cache
   gtk-vnc
-  gtk2
   gtk3
   gtk4
   gtk4-layer-shell
-  gtkmm-4.0
-  gtkmm3
-  gtksourceview3
-  gtksourceview4
-  gtksourceviewmm
   hyprland
   waybar
   rofi
@@ -96,7 +90,6 @@ PACKAGES=(
   zsh-autosuggestions
   zsh-history-substring-search
   zsh-syntax-highlighting
-  zsh-theme-powerlevel10k-git
   cava
   kitty
   yazi
@@ -133,6 +126,18 @@ PACKAGES=(
   starship
   fontconfig
   adw-gtk-theme-git
+  hyprlock
+  grim
+  slurp
+  jq
+  libnotify
+  imagemagick
+  tesseract
+  tesseract-data-eng
+  wf-recorder
+  hyprpicker
+  opencv
+  python-opencv
 )
 
 # Dotfiles repos
