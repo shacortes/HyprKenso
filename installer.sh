@@ -261,16 +261,6 @@ sudo systemctl enable --now mpd
 systemctl --user enable --now pipewire pipewire-pulse
 
 # -----------------------------
-# Downgrade Hyprland → 0.52.2
-# -----------------------------
-echo "⬇ Downgrading Hyprland to 0.52.2"
-sudo downgrade hyprland --version 0.52.2 --yes
-
-if ! grep -q "^IgnorePkg.*hyprland" /etc/pacman.conf; then
-  sudo sed -i '/^\[options\]/a IgnorePkg = hyprland' /etc/pacman.conf
-fi
-
-# -----------------------------
 # Fix hypr-lens paths
 # -----------------------------
 echo "🛠 Fixing hypr-lens paths..."
