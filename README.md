@@ -152,14 +152,6 @@ rm -rf dots
 ./installer.sh
 ```
 
----
-
-## Post-Install
-
-```bash
-sudo downgrade hyprland   # select 0.52.2
-sudo downgrade nvim       # select 0.11.5
-```
 
 ---
 

@@ -19,6 +19,18 @@ BACKUP_DIR="$HOME/.config_backup_$(date +%Y%m%d%H%M)"
 PACKAGES=(
   tar
   7zip
+  unzip
+  ripgrep
+  fd 
+  nodejs
+  luarocks 
+  base-devel
+  hererocks 
+  lua 
+  satty 
+  tree-sitter-cli
+  lazygit 
+  npm
   file-roller
   downgrade
   sddm
