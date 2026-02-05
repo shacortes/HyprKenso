@@ -1,0 +1,110 @@
+HyprKenso Dotfiles License
+
+Copyright (c) 2026 Aadrito Basu
+
+This project (including all configuration files, scripts, installer scripts, themes, and related resources)
+is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+Full License:
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+
+============================================================
+Permissions
+============================================================
+
+You are free to:
+
+• Use this project for personal or educational purposes
+• Copy and redistribute this project in any medium or format
+• Modify, remix, and build upon this project
+• Fork and republish this project
+• Include this project in free distributions or free community setups
+
+
+============================================================
+Conditions
+============================================================
+
+Attribution (Credit Required)
+-----------------------------
+You must give appropriate credit to the original author:
+
+Aadrito Basu
+Original Repository: https://github.com/aadritobasu
+
+Credit must be clearly visible in:
+• Repository description OR README
+• Any redistribution post
+• Any showcase or public release
+
+
+ShareAlike (Open Source Requirement)
+------------------------------------
+If you modify, remix, or build upon this project:
+
+• You MUST release your version under the same CC BY-NC-SA 4.0 license
+• You MUST provide source/config files publicly
+• You MAY NOT convert this project into closed-source software
+
+
+NonCommercial (Strict Anti-Selling Clause)
+------------------------------------------
+You MAY NOT sell, monetize, or commercially distribute this project or any modified version.
+
+This includes but is NOT limited to:
+
+• Selling this rice or modified versions
+• Paywalled downloads (Gumroad, Ko-fi shop, Patreon paid tiers, etc.)
+• Selling access to setups that include this project
+• Bundling this rice in paid Linux setups or packages
+• Selling preconfigured systems containing this rice
+• Charging money for installation services that include redistribution of this project
+
+
+============================================================
+Installer Scripts Coverage
+============================================================
+
+All installer scripts, automation tools, and setup scripts included in this repository
+are covered under the SAME license terms listed above.
+
+
+============================================================
+Wallpapers Exception
+============================================================
+
+Wallpapers included in this repository are NOT covered by this license
+unless explicitly stated inside the wallpaper directory.
+
+Wallpapers may have their own licenses and ownership.
+Users are responsible for respecting original wallpaper authors and licenses.
+
+
+============================================================
+Prohibited Actions
+============================================================
+
+You are NOT allowed to:
+
+• Remove or alter author credits
+• Rebrand this project as your original work
+• Sell or monetize this project
+• Distribute modified versions without open source access
+• Claim ownership of the design, configuration, or scripts
+
+
+============================================================
+Disclaimer
+============================================================
+
+This project is provided "as-is", without warranty of any kind.
+The author is not responsible for any system damage, data loss, or misuse.
+
+
+============================================================
+Contact
+============================================================
+
+If you want to request commercial permission or special usage rights,
+contact the author through the original GitHub repository.
