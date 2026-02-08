@@ -21,15 +21,15 @@ PACKAGES=(
   7zip
   unzip
   ripgrep
-  fd 
+  fd
   nodejs
-  luarocks 
+  luarocks
   base-devel
-  hererocks 
-  lua 
-  satty 
+  hererocks
+  lua
+  satty
   tree-sitter-cli
-  lazygit 
+  lazygit
   npm
   file-roller
   downgrade
@@ -113,6 +113,7 @@ PACKAGES=(
   rmpc-git
   quickshell-git
   mpd
+  mpd-mpris
   playerctl
   brightnessctl
   visual-studio-code-insiders-bin
