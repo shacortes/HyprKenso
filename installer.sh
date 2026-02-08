@@ -291,6 +291,20 @@ if [[ -f "$CFG" ]]; then
   mv "$tmp" "$CFG"
 fi
 
+
+
+QS_MUSIC="$HOME/.config/quickshell/music/MusicPanel.qml"
+
+if [[ -f "$QS_MUSIC" ]]; then
+    echo "Fixing matugen path in MusicPanel.qml..."
+
+    sed -i "s|/home/[^/]*/.config/quickshell/matugen.json|$HOME/.config/quickshell/matugen.json|g" "$QS_MUSIC"
+
+    echo "✔ Path updated"
+else
+    echo "⚠ MusicPanel.qml not found, skipping..."
+fi
+
 # -----------------------------
 # Display manager
 # -----------------------------
