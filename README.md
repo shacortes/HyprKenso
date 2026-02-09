@@ -91,6 +91,16 @@
 </p>
 
 <p align="center">
+  <img src="screenshots/desktop-19.png" width="45%" />
+  <img src="screenshots/desktop-20.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="screenshots/desktop-21.png" width="45%" />
+  <img src="screenshots/desktop-22.png" width="45%" />
+</p>
+
+<p align="center">
   <em>Minimal • Material You inspired • Workflow focused</em>
 </p>
 
