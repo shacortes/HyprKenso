@@ -161,6 +161,8 @@ PACKAGES=(
   zsh-theme-powerlevel10k-git
   fzf
   fzf-tab-git
+  eza
+  bat
 )
 
 # -----------------------------
