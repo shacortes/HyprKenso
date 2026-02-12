@@ -235,17 +235,17 @@ rsync -a \
 echo "🔗 Creating symlinks..."
 
 # Waybar theme config
-ln -sf "$HOME/.config/waybar/themes/default/config.jsonc" \
+sudo ln -sf "$HOME/.config/waybar/themes/default/config.jsonc" \
        "$HOME/.config/waybar/config.jsonc"
-ln -sf "$HOME/.config/waybar/themes/default/style.css" \
+sudo ln -sf "$HOME/.config/waybar/themes/default/style.css" \
        "$HOME/.config/waybar/style.css"
 
 # Starship config
-ln -sf "$HOME/.local/share/mybash/starship.toml" \
+sudo ln -sf "$HOME/.local/share/mybash/starship.toml" \
        "$HOME/.config/starship.toml"
 
 # Wallpaper symlink
-ln -sf "$HOME/Pictures/wallpapers/cat-mocha-sky/cat-mocha-sky_32.png" \
+sudo ln -sf "$HOME/Pictures/wallpapers/cat-mocha-sky/cat-mocha-sky_32.png" \
        "$HOME/.config/hypr/current_wallpaper"
 # -----------------------------
 # GTK 4.0 theme symlinks
@@ -258,9 +258,9 @@ GTK_CONFIG_DIR="$HOME/.config/gtk-4.0"
 mkdir -p "$GTK_CONFIG_DIR"
 
 if [[ -d "$GTK_THEME_DIR" ]]; then
-  ln -sf "$GTK_THEME_DIR/gtk.css"       "$GTK_CONFIG_DIR/gtk.css"
-  ln -sf "$GTK_THEME_DIR/gtk-dark.css"  "$GTK_CONFIG_DIR/gtk-dark.css"
-  ln -sf "$GTK_THEME_DIR/assets"        "$GTK_CONFIG_DIR/assets"
+  sudo ln -sf "$GTK_THEME_DIR/gtk.css"       "$GTK_CONFIG_DIR/gtk.css"
+  sudo ln -sf "$GTK_THEME_DIR/gtk-dark.css"  "$GTK_CONFIG_DIR/gtk-dark.css"
+  sudo ln -sf "$GTK_THEME_DIR/assets"        "$GTK_CONFIG_DIR/assets"
   echo "✔ GTK theme symlinks created"
 else
   echo "⚠ GTK theme not found at $GTK_THEME_DIR"
